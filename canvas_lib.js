@@ -161,52 +161,55 @@ CanvWrap=function(id,width,height){
 		while(l_mouse_outs.length>0)
 		{
 				var thrown=l_mouse_outs.pop();
-				if(thrown.action['mouseout'])
+				var node=thrown.getNode();
+				if(node.action['mouseout'])
 				{
-					var ev={targetX:thrown.bounds['mouseout'].x,
-							targetY:thrown.bounds['mouseout'].y,
-							targetWidth:thrown.bounds['mouseout'].w,
-							targetHeight:thrown.bounds['mouseout'].h,
+					var ev={targetX:node.bounds['mouseout'].x,
+							targetY:node.bounds['mouseout'].y,
+							targetWidth:node.bounds['mouseout'].w,
+							targetHeight:node.bounds['mouseout'].h,
 							x:xy.x,
 							y:xy.y,
 							action:'mouseout',
 							pageX:xy.pageX,
 							pageY:xy.pageY}
-					thrown.func['mouseout'].call(thrown, ev);
+					node.func['mouseout'].call(thrown, ev);
 				}
 		}
 		while(l_mouse_ins.length>0)
 		{
 				var thrown=l_mouse_ins.pop();
-				if(thrown.action['mouseover'])
+				var node=thrown.getNode();
+				if(node.action['mouseover'])
 				{
-					var ev={targetX:thrown.bounds['mouseover'].x,
-							targetY:thrown.bounds['mouseover'].y,
-							targetWidth:thrown.bounds['mouseover'].w,
-							targetHeight:thrown.bounds['mouseover'].h,
+					var ev={targetX:node.bounds['mouseover'].x,
+							targetY:node.bounds['mouseover'].y,
+							targetWidth:node.bounds['mouseover'].w,
+							targetHeight:node.bounds['mouseover'].h,
 							x:xy.x,
 							y:xy.y,
 							action:'mouseover',
 							pageX:xy.pageX,
 							pageY:xy.pageY}
-					thrown.func['mouseover'].call(thrown, ev);
+					node.func['mouseover'].call(thrown, ev);
 				}
 		}
 		while(l_results.length>0)
 		{
 				var thrown=l_results.pop();
-				if(thrown.action['mousemove'])
+				var node=thrown.getNode();
+				if(node.action['mousemove'])
 				{
-					var ev={targetX:thrown.bounds['mousemove'].x,
-							targetY:thrown.bounds['mousemove'].y,
-							targetWidth:thrown.bounds['mousemove'].w,
-							targetHeight:thrown.bounds['mousemove'].h,
+					var ev={targetX:node.bounds['mousemove'].x,
+							targetY:node.bounds['mousemove'].y,
+							targetWidth:node.bounds['mousemove'].w,
+							targetHeight:node.bounds['mousemove'].h,
 							x:xy.x,
 							y:xy.y,
 							action:'mousemove',
 							pageX:xy.pageX,
 							pageY:xy.pageY}
-					thrown.func['mousemove'].call(thrown, ev);
+					node.func['mousemove'].call(thrown, ev);
 				}
 		}
 	}
