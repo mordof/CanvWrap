@@ -340,16 +340,20 @@ CanvasRect=function(id,layer,b1,col,type){
 	}
 	this.setStyle=function(col,type)
 	{
+		if(!type) type=drawObj['drawStyle'];
 		switch(type)
 		{
 			case "clear":
+			case 0:
 				drawObj['drawStyle']=0;
 				break;
 			case "stroke":
+			case 2:
 				drawObj['strokeStyle']=col?col:'black';
 				drawObj['drawStyle']=2;
 				break;
 			case "fill":
+			case 1:
 			default:
 				drawObj['fillStyle']=col?col:'black';
 				drawObj['drawStyle']=1;
