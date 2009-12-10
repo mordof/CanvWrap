@@ -97,7 +97,7 @@ CanvWrap=function(id,width,height){
 				if(track_mouse)
 					break;
 			}
-		
+		obj.setCTX(canvctx);
 		rt.insert(node.bounds, obj);
 	}
 
@@ -245,7 +245,7 @@ CanvWrap.coords=function(bounds){ return [bounds.x,bounds.y,bounds.w,bounds.h]; 
 
 CanvasImage=function(image,id,layer,b1,b2){
 	var nodeObj={"func":{}, "action":{}, "bounds":{}, "id":id, "layer":layer?layer:'main'},
-		drawObj={type:0},
+		drawObj={type:0,ctx:null},
 		b1=b1,
 		b2=b2;
 
@@ -289,6 +289,10 @@ CanvasImage=function(image,id,layer,b1,b2){
 	{
 		return nodeObj;
 	}
+	this.setCTX=function(ctx)
+	{
+		drawObj['ctx']=ctx;
+	}
 	this.addEvent=function(action,func)
 	{
 		if(!action || !func) return;
@@ -297,7 +301,7 @@ CanvasImage=function(image,id,layer,b1,b2){
 	}
 	
 	// REQUIRED: this.__draw(), necessary for all objects in order to be shown on the canvas.
-	this.draw=function(ctx)
+	this.draw=function()
 	{
 		switch(drawObj.type)
 		{
@@ -305,12 +309,12 @@ CanvasImage=function(image,id,layer,b1,b2){
 				var tmparr=[drawObj['img']];
 				tmparr.push.apply(tmparr, CanvWrap.coords(drawObj['source']));
 				tmparr.push.apply(tmparr, CanvWrap.coords(drawObj['destination']));
-				ctx.drawImage.apply(ctx, tmparr);
+				drawObj['ctx'].drawImage.apply(drawObj['ctx'], tmparr);
 				break;
 			case 2:
 				var tmparr=[drawObj['img']];
 				tmparr.push.apply(tmparr, CanvWrap.coords(drawObj['destination']));
-				ctx.drawImage.apply(ctx, tmparr);
+				drawObj['ctx'].drawImage.apply(drawObj['ctx'], tmparr);
 				break;
 		}
 	}
@@ -323,7 +327,7 @@ CanvasImage=function(image,id,layer,b1,b2){
 
 CanvasRect=function(id,layer,b1,col,type){
 	var nodeObj={"func":{}, "action":{}, "bounds":{}, "id":id, "layer":layer?layer:'main'},
-		drawObj={fillStyle:'black',strokeStyle:'black',drawStyle:1} // clear = 0, 1 = fill, 2 = stroke
+		drawObj={fillStyle:'black',strokeStyle:'black',drawStyle:1,ctx:null} // clear = 0, 1 = fill, 2 = stroke
 		
 	// Methods to set up / initialize the object.
 	this.setBounds=function(bounds1)
@@ -360,6 +364,10 @@ CanvasRect=function(id,layer,b1,col,type){
 	{
 		return nodeObj;
 	}
+	this.setCTX=function(ctx)
+	{
+		drawObj['ctx']=ctx;
+	}
 	this.addEvent=function(action,func)
 	{
 		if(!action || !func) return;
@@ -368,20 +376,20 @@ CanvasRect=function(id,layer,b1,col,type){
 	}
 	
 	// REQUIRED: this.draw(), necessary for all objects in order to be shown on the canvas.
-	this.draw=function(ctx)
+	this.draw=function()
 	{
 		switch(drawObj.drawStyle)
 		{
 			case 0:
-				ctx.clearRect.apply(ctx, CanvWrap.coords(nodeObj.bounds));
+				drawObj['ctx'].clearRect.apply(drawObj['ctx'], CanvWrap.coords(nodeObj.bounds));
 				break;
 			case 1:
-				ctx.fillStyle=drawObj.fillStyle;
-				ctx.fillRect.apply(ctx, CanvWrap.coords(nodeObj.bounds));
+				drawObj['ctx'].fillStyle=drawObj.fillStyle;
+				drawObj['ctx'].fillRect.apply(drawObj['ctx'], CanvWrap.coords(nodeObj.bounds));
 				break;
 			case 2:
-				ctx.strokeStyle=drawObj.strokeStyle;
-				ctx.strokeRect.apply(ctx, CanvWrap.coords(nodeObj.bounds));
+				drawObj['ctx'].strokeStyle=drawObj.strokeStyle;
+				drawObj['ctx'].strokeRect.apply(drawObj['ctx'], CanvWrap.coords(nodeObj.bounds));
 				break;
 		}
 	}
