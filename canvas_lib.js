@@ -331,7 +331,6 @@ CanvasRect=function(id,layer,b1,col,type){
 		// clear = 0, 1 = fill, 2 = stroke
 	this.lineWidth=1.0;
 	this.lineJoin='miter';
-	this.lineCap='butt';
 	this.miterLimit=10;
 	this.drawStyle=type||'fill';
 	this.color=col||'black';
@@ -380,7 +379,6 @@ CanvasRect=function(id,layer,b1,col,type){
 				drawObj['ctx'].strokeStyle=this.color;
 				drawObj['ctx'].lineWidth=this.lineWidth;
 				drawObj['ctx'].lineJoin=this.lineJoin;
-				drawObj['ctx'].lineCap=this.lineCap;
 				drawObj['ctx'].miterLimit=this.miterLimit;
 				drawObj['ctx'].strokeRect.apply(drawObj['ctx'], CanvWrap.coords(nodeObj.bounds));
 				break;
