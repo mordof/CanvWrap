@@ -164,10 +164,10 @@ CanvWrap=function(id,width,height){
 				var node=thrown.getNode();
 				if(node.action['mouseout'])
 				{
-					var ev={targetX:node.bounds['mouseout'].x,
-							targetY:node.bounds['mouseout'].y,
-							targetWidth:node.bounds['mouseout'].w,
-							targetHeight:node.bounds['mouseout'].h,
+					var ev={targetX:node.bounds.x,
+							targetY:node.bounds.y,
+							targetWidth:node.bounds.w,
+							targetHeight:node.bounds.h,
 							x:xy.x,
 							y:xy.y,
 							action:'mouseout',
@@ -182,10 +182,10 @@ CanvWrap=function(id,width,height){
 				var node=thrown.getNode();
 				if(node.action['mouseover'])
 				{
-					var ev={targetX:node.bounds['mouseover'].x,
-							targetY:node.bounds['mouseover'].y,
-							targetWidth:node.bounds['mouseover'].w,
-							targetHeight:node.bounds['mouseover'].h,
+					var ev={targetX:node.bounds.x,
+							targetY:node.bounds.y,
+							targetWidth:node.bounds.w,
+							targetHeight:node.bounds.h,
 							x:xy.x,
 							y:xy.y,
 							action:'mouseover',
@@ -200,10 +200,10 @@ CanvWrap=function(id,width,height){
 				var node=thrown.getNode();
 				if(node.action['mousemove'])
 				{
-					var ev={targetX:node.bounds['mousemove'].x,
-							targetY:node.bounds['mousemove'].y,
-							targetWidth:node.bounds['mousemove'].w,
-							targetHeight:node.bounds['mousemove'].h,
+					var ev={targetX:node.bounds.x,
+							targetY:node.bounds.y,
+							targetWidth:node.bounds.w,
+							targetHeight:node.bounds.h,
 							x:xy.x,
 							y:xy.y,
 							action:'mousemove',
@@ -285,7 +285,7 @@ CanvasImage=function(image,id,layer,b1,b2){
 	{
 		nodeObj.layer=layer;
 	}
-	this.__getNode=function()
+	this.getNode=function()
 	{
 		return nodeObj;
 	}
@@ -305,12 +305,12 @@ CanvasImage=function(image,id,layer,b1,b2){
 				var tmparr=[drawObj['img']];
 				tmparr.push.apply(tmparr, CanvWrap.coords(drawObj['source']));
 				tmparr.push.apply(tmparr, CanvWrap.coords(drawObj['destination']));
-				ctx.drawImage.call(ctx, tmparr);
+				ctx.drawImage.apply(ctx, tmparr);
 				break;
 			case 2:
 				var tmparr=[drawObj['img']];
 				tmparr.push.apply(tmparr, CanvWrap.coords(drawObj['destination']));
-				ctx.drawImage.call(ctx, tmparr);
+				ctx.drawImage.apply(ctx, tmparr);
 				break;
 		}
 	}
@@ -356,9 +356,15 @@ CanvasRect=function(id,layer,b1,col,type){
 	{
 		nodeObj['layer']=layer;
 	}
-	this.__getNode=function()
+	this.getNode=function()
 	{
 		return nodeObj;
+	}
+	this.addEvent=function(action,func)
+	{
+		if(!action || !func) return;
+		nodeObj.func[action]=func;
+		nodeObj.action[action]=true;
 	}
 	
 	// REQUIRED: this.draw(), necessary for all objects in order to be shown on the canvas.
@@ -367,15 +373,15 @@ CanvasRect=function(id,layer,b1,col,type){
 		switch(drawObj.drawStyle)
 		{
 			case 0:
-				ctx.clearRect.call(ctx, CanvWrap.coords(nodeObj.bounds));
+				ctx.clearRect.apply(ctx, CanvWrap.coords(nodeObj.bounds));
 				break;
 			case 1:
 				ctx.fillStyle=drawObj.fillStyle;
-				ctx.fillRect.call(ctx, CanvWrap.coords(nodeObj.bounds));
+				ctx.fillRect.apply(ctx, CanvWrap.coords(nodeObj.bounds));
 				break;
 			case 2:
 				ctx.strokeStyle=drawObj.strokeStyle;
-				ctx.strokeRect.call(ctx, CanvWrap.coords(nodeObj.bounds));
+				ctx.strokeRect.apply(ctx, CanvWrap.coords(nodeObj.bounds));
 				break;
 		}
 	}
