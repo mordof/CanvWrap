@@ -19,12 +19,15 @@
 		{
 			x=rnd(5,600);
 			y=rnd(5,450);
-			rects[i]=new CanvasRect('rect'+i,'main',CanvWrap.bounds(x,y,w,h),'grey',1);
+			rects[i]=new CanvasRect('rect'+i,'main',CanvWrap.bounds(x,y,w,h),'#aaa',2);
+			rects[i].setLineWidth(10);
 			rects[i].addEvent('mouseover',highlight);
 			rects[i].addEvent('mouseout',function(){
 				(function (t){
 				setTimeout(function(){
-					t.setStyle("grey");
+					t.setStyle("#aaa");
+					t.setLineJoin('miter');
+					t.setMiterLimit(10);
 					t.draw();
 				},500); })(this);
 			});
@@ -35,6 +38,8 @@
 		function highlight(e)
 		{
 			this.setStyle(cols[m++>4?m=0:m]);
+			this.setLineJoin('round');
+			this.setMiterLimit(1);
 			this.draw();
 		}
 

@@ -327,7 +327,8 @@ CanvasImage=function(image,id,layer,b1,b2){
 
 CanvasRect=function(id,layer,b1,col,type){
 	var nodeObj={"func":{}, "action":{}, "bounds":{}, "id":id, "layer":layer?layer:'main'},
-		drawObj={fillStyle:'black',strokeStyle:'black',drawStyle:1,ctx:null} // clear = 0, 1 = fill, 2 = stroke
+		drawObj={fillStyle:'black',strokeStyle:'black',drawStyle:1,ctx:null,lineWidth:1.0,lineCap:'butt',lineJoin:'miter',miterLimit:10};
+		// clear = 0, 1 = fill, 2 = stroke
 		
 	// Methods to set up / initialize the object.
 	this.setBounds=function(bounds1)
@@ -372,6 +373,18 @@ CanvasRect=function(id,layer,b1,col,type){
 	{
 		drawObj['ctx']=ctx;
 	}
+	this.setLineWidth=function(f)
+	{
+		drawObj['lineWidth']=f;
+	}
+	this.setLineJoin=function(s)
+	{
+		drawObj['lineJoin']=s;
+	}
+	this.setMiterLimit=function(f)
+	{
+		drawObj['miterLimit']=f;
+	}
 	this.addEvent=function(action,func)
 	{
 		if(!action || !func) return;
@@ -393,10 +406,15 @@ CanvasRect=function(id,layer,b1,col,type){
 				break;
 			case 2:
 				drawObj['ctx'].strokeStyle=drawObj.strokeStyle;
+				drawObj['ctx'].lineWidth=drawObj['lineWidth'];
+				drawObj['ctx'].lineJoin=drawObj['lineJoin'];
+				drawObj['ctx'].miterLimit=drawObj['miterLimit'];
 				drawObj['ctx'].strokeRect.apply(drawObj['ctx'], CanvWrap.coords(nodeObj.bounds));
 				break;
 		}
 	}
+	
+	
 	
 	this.setLayer(layer);
 	this.setBounds(b1);
