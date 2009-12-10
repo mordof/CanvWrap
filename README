@@ -1,0 +1,7 @@
+.- CanvWrap -.
+  CanvWrap is designed to mimic the DOM structure so that placing events on objects in the canvas
+  is relatively simple.  Events may also be placed by using a method found in the wrapper to
+  emulate the same behavior as if you were to place the event on the document, and then restrict it
+  to the specified bounds to react.  
+  
+  TODO (Readme): add in further description, as well as examples of usage.
